@@ -1,6 +1,6 @@
 const express = require('express');
 
-const route = require('./route/route.js');
+const route = require('./routes/routes.js');
 const { default: mongoose } = require('mongoose');
 const app = express();
 
@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-mongoose.connect("mongodb+srv://Aman_Mohadikar:V5FW1Y8X6b2pIiud@cluster0.gdww84s.mongodb.net/project-2", {
+mongoose.connect("mongodb+srv://group4:group4@cluster0.dknd8jj.mongodb.net/project3", {
     useNewUrlParser: true
 })
 .then( () => console.log("MongoDb is connected"))
