@@ -9,20 +9,20 @@ const createReview= async function(req,res){
 
         //----------------------pathParam-------------------------
         let param= req.params.bookId
-        if(!param) return res.status(400).send({status:false, msg: "bookId is required in the path param"}) //check if bookId is mentioned in path param
+        if(!param) return res.status(400).send({status:false, message: "bookId is required in the path param"}) //check if bookId is mentioned in path param
        
         //----------------------requestBody-------------------------
         let data=req.body
         let{bookId, reviewedBy, rating, review, reviewedAt}=data
-        if(Object.keys(data).length==0) return res.status(400).send({status:false, msg: "data is required in the request body"})//check if the request body is empty
+        if(Object.keys(data).length==0) return res.status(400).send({status:false, message: "data is required in the request body"})//check if the request body is empty
         
         //------------------------keys in req body----------------------------
 
-        if(!bookId) return res.status(400).send({status:false, msg: "bookId is required in the request body"}) //check if bookId is mentioned 
-        if(!reviewedBy) return res.status(400).send({status:false, msg: "reviewedBy is required in the request body"}) //check if reviewedBy is mentioned 
-        if(!rating) return res.status(400).send({status:false, msg: "rating is required in the request body"}) //check if rating is mentioned 
-        if(!review) return res.status(400).send({status:false, msg: "review is required in the request body"}) //check if review is mentioned 
-        if(!reviewedAt) return res.status(400).send({status:false, msg: "reviewedAt is required in the request body"}) //check if reviewedAt is mentioned 
+        if(!bookId) return res.status(400).send({status:false, message: "bookId is required in the request body"}) //check if bookId is mentioned 
+        if(!reviewedBy) return res.status(400).send({status:false, message: "reviewedBy is required in the request body"}) //check if reviewedBy is mentioned 
+        if(!rating) return res.status(400).send({status:false, message: "rating is required in the request body"}) //check if rating is mentioned 
+        if(!review) return res.status(400).send({status:false, message: "review is required in the request body"}) //check if review is mentioned 
+        if(!reviewedAt) return res.status(400).send({status:false, message: "reviewedAt is required in the request body"}) //check if reviewedAt is mentioned 
         
          //------------------------validation----------------------------------
 
@@ -35,9 +35,9 @@ const createReview= async function(req,res){
         //-----------------------check bookId && isDeleted:false----------------------------
 
         let checkBookId= await bookModel.findOne({_id:bookId, isDeleted:false})
-        if(!checkBookId) return res.status(400).send({status:false, msg: "book does'nt exist"})//checking bookId
+        if(!checkBookId) return res.status(404).send({status:false, message: "book does'nt exist"})//checking bookId
 
-        if(param!=data.bookId) return res.status(400).send({status:false, msg: "Path param's bookId does'nt match with request body's bookId"})
+        if(param!=data.bookId) return res.status(400).send({status:false, message: "Path param's bookId does'nt match with request body's bookId"})
         
         //--------------------------update review----------------------------
 

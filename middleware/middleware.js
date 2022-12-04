@@ -84,10 +84,10 @@ const authentication = async (req, res, next) => {
 //--------------------------findBook-------------------------
 
 let checkBookId= await bookModel.findById({_id:bookId, isdeleted:false})
-if(!checkBookId) return res.status(400).send({status:false, msg: "book does'nt exist"})//checking bookId
+if(!checkBookId) return res.status(404).send({status:false, msg: "book does'nt exist"})//checking bookId
 
 let isReviewDelete= await reviewModel.findById({_id:reviewId})
-if(!isReviewDelete.isDeleted===false) return res.status(400).send({status: false, msg:"review is deleted"})
+if(!isReviewDelete.isDeleted===false) return res.status(404).send({status: false, msg:"review is deleted"})
 
 next()
     }

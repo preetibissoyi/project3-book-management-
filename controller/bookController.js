@@ -12,24 +12,24 @@ const createBook= async function(req,res){
     
         //---------------------------keys in the req body--------------------------------
 
-        if(!title) return res.status(400).send({status:false, msg: "title is required in the request body"}) //check if title is mentioned 
-        if(!excerpt) return res.status(400).send({status:false, msg: "excerpt is required in the request body"}) //check if excerpt is mentioned 
-        if(!userId) return res.status(400).send({status:false, msg: "userId is required in the request body"}) //check if userId is mentioned 
-        if(!ISBN) return res.status(400).send({status:false, msg: "ISBN is required in the request body"}) //check if ISBN is mentioned 
-        if(!category) return res.status(400).send({status:false, msg: "category is required in the request body"}) //check if category is mentioned 
-        if(!subcategory) return res.status(400).send({status:false, msg: "subcategory is required in the request body"}) //check if subcategory is mentioned 
-        if(!releasedAt) return res.status(400).send({status:false, msg: "releasedAt is required in the request body"}) //check if releasedAt is mentioned 
+        if(!title) return res.status(400).send({status:false, message: "title is required in the request body"}) //check if title is mentioned 
+        if(!excerpt) return res.status(400).send({status:false, message: "excerpt is required in the request body"}) //check if excerpt is mentioned 
+        if(!userId) return res.status(400).send({status:false, message: "userId is required in the request body"}) //check if userId is mentioned 
+        if(!ISBN) return res.status(400).send({status:false, message: "ISBN is required in the request body"}) //check if ISBN is mentioned 
+        if(!category) return res.status(400).send({status:false, message: "category is required in the request body"}) //check if category is mentioned 
+        if(!subcategory) return res.status(400).send({status:false, message: "subcategory is required in the request body"}) //check if subcategory is mentioned 
+        if(!releasedAt) return res.status(400).send({status:false, message: "releasedAt is required in the request body"}) //check if releasedAt is mentioned 
 
          //---------------------------unique keys------------------------------
        
         let unique= await bookModel.findOne({isDeleted:false})
-        if(!unique)return res.status(400).send({status:false, msg: "book does not exist"}) 
+        if(!unique)return res.status(404).send({status:false, message: "book does not exist"}) 
 
         let uniqueTitle= await bookModel.findOne({title:title})
-        if(uniqueTitle) return res.status(400).send({status:false, msg: "title already exist"}) //unique title
+        if(uniqueTitle) return res.status(400).send({status:false, message: "title already exist"}) //unique title
         
         let uniqueISBN= await bookModel.findOne({ISBN:ISBN})
-        if(uniqueISBN) return res.status(400).send({status:false, msg: "ISBN already exist"}) //unique ISBN
+        if(uniqueISBN) return res.status(400).send({status:false, message: "ISBN already exist"}) //unique ISBN
         
         //--------------------------authorisation--------------------------------
 
@@ -48,67 +48,12 @@ const createBook= async function(req,res){
         if(!isValidString(category) || !isValidName(category)) return res.status(400).send({status:false,message:"Please provide valid category"})  //it should be a valid category
         if( !isValidString(ISBN) || !isValidName(ISBN) ) return res.status(400).send({status:false,message:"Please provide valid ISBN"})  //it should be a valid ISBN
         if(!isValidDate(releasedAt) ) return res.status(400).send({status:false,message:"Please provide valid releasedAt"})  //it should be a valid releasedAt
-        
-        const regex = /^[a-zA-Z\- ]*$/; //Regex Validation (Only Alphabets, White-Spaces and Hyphen(-)).
-
-    //Subcategory(as STRING) Validations.
-    if (subcategory) {
-      if (typeof subcategory === "string") {
-        if (!subcategory.trim().length) {
-          return res
-            .status(400)
-            .send({ status: false, msg: "SUBCATEGORY can't be Empty." });
-        }
-        if (!regex.test(subcategory)) {
-          return res.status(400).send({
-            status: false,
-            msg: "SUBCATEGORY can be Alphabets, Hyphen(-) & White-space(s) ONLY.",
-          });
-        }
-      }
-           //Subcategory(as ARRAY) Validation.
-      if (typeof subcategory === "object") {
-        const x = subcategory.filter((x) => x.length === 0);
-        if (x.length) {
-          return res
-            .status(400)
-            .send({ status: false, msg: "SUBCATEGORY can't be Empty." });
-        }
-        const y = subcategory.filter((x) => !regex.test(x));
-        if (y.length) {
-          return res.status(400).send({
-            status: false,
-            msg: "SUBCATEGORY can be Alphabets, Hyphen(-) & White-space(s) ONLY.",
-          });
-        } else {
-          let flag = 0;
-          const subcat = subcategory;
-          for (let i = 0; i < subcat.length - 1; i++) {
-            for (let j = i + 1; j < subcat.length; j++) {
-              if (subcat[i].toLowerCase() === subcat[j].toLowerCase()) {
-                flag++;
-              }
-            }
-          }
-          if (flag) {
-            return res.status(400).send({
-              status: false,
-              msg: "SUBCATEGORY can ONLY have UNIQUE values.",
-            });
-          }
-        }
-      }
-    } else {
-      return res
-        .status(400)
-        .send({ status: false, msg: "Please enter a Valid SUBCATEGORY." });
-    
-}
+        if(!isValidString(subcategory) || !isValidName(subcategory)) return res.status(400).send({status:false,message:"Please provide valid subcategory"})  //it should be a valid subcategory
        
         //-----------------------Create User data---------------------------
 
         let bookData = await bookModel.create(data)
-        return res.status(201).send({ status: true, msg: bookData })
+        return res.status(201).send({ status: true, message: bookData })
         
     }
     catch(error){
@@ -160,7 +105,7 @@ try{
     //--------------------------crossCheckqueryWithMongo---------------------------
 
        let getBooks= await bookModel.find({userId:userId, isDeleted:false}).select({_id:1,title:1,excerpt:1,userId:1,category:1,reviews:1,releasedAt:1}).sort({title:1})
-    if(!getBooks) return res.status(400).send({status:false, message: "book is deleted"})
+    if(!getBooks) return res.status(404).send({status:false, message: "book is deleted"})
 
     //-------------------------------authorisation------------------------
 
@@ -194,10 +139,10 @@ const getBooksByPathParams= async function (req, res){
          let bookId=middleware.authorisation.bookId
 
          let findReview= await reviewModel.find({bookId:bookId,isDeleted:false}).select({ __v: 0, isDeleted: 0 });
-         if(!findReview) return res.status(400).send({status:false, message: "Review doesnt exist"})
+         if(!findReview) return res.status(404).send({status:false, message: "Review doesnt exist"})
         //--------------------------findBook-------------------------
         let findBook = await bookModel.findOne({isDeleted:false})
-        if(!findBook) return res.status(400).send({status:false, message: "Book doesnt exist"})
+        if(!findBook) return res.status(404).send({status:false, message: "Book doesnt exist"})
 
         //-------------------objectDestructuring---------------------------
         const finalData = { ...findBook.toObject(), reviewsData: findReview };
@@ -228,7 +173,7 @@ const getBooksByPathParams= async function (req, res){
 
          if (Object.keys(data).length==0) return res.status(400).send({status:false, message: "provide required information in the request body"})//check if data is available in req body    }
 
-         if(!title || !excerpt || !releasedAt || !ISBN) return res.status(400).send({status:false, msg: "title, excerpt, releasedAt or ISBN is missing from request body"}) //check if bookId is mentioned in path param
+         if(!title || !excerpt || !releasedAt || !ISBN) return res.status(400).send({status:false, message: "title, excerpt, releasedAt or ISBN is missing from request body"}) //check if bookId is mentioned in path param
         
           //---------------------------validation--------------------------------
 
@@ -237,15 +182,15 @@ const getBooksByPathParams= async function (req, res){
         if(!isValidDate(releasedAt) ) return res.status(400).send({status:false,message:"Please provide valid releasedAt"})  //it should be a valid releasedAt
        
         let findBookIsDeleted= await bookModel.findOne({isDeleted:false})
-        if(!findBookIsDeleted)  return res.status(400).send({status: false, msg:"book is deleted"});
+        if(!findBookIsDeleted)  return res.status(404).send({status: false, message:"book is deleted"});
 
         //---------------------------unique title&&ISBN------------------------------
       
         let findBooktitle= await bookModel.findOne({title:title})
-        if(findBooktitle)return res.status(400).send({status:false, msg: "title already exist"}) //unique title
+        if(findBooktitle)return res.status(400).send({status:false, message: "title already exist"}) //unique title
           
         let findISBN= await bookModel.findOne({ISBN:ISBN})
-        if(findISBN) return res.status(400).send({status:false, msg: "ISBN already exist"}) //unique ISBN  
+        if(findISBN) return res.status(400).send({status:false, message: "ISBN already exist"}) //unique ISBN  
         
         
 
@@ -286,7 +231,7 @@ const deleteParam = async function(req, res){
 
        //--------------------------findBook-------------------------
        let findBook= await bookModel.findOne({isDeleted:false})
-       if(!findBook) return res.status(400).send({status: false, msg:"book is deleted"});
+       if(!findBook) return res.status(404).send({status: false, message:"book is deleted"});
 
        //------------------------findAndUpdate---------------------------
 

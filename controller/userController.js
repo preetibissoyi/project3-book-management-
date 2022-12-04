@@ -17,15 +17,15 @@ const createUser= async function(req, res){
         
         //------------------------title----------------------------
 
-        if(!title) return res.status(400).send({status:false, msg: "title is required in the request body"}) //check if title is mentioned 
-        if(!name) return res.status(400).send({status:false, msg: "name is required in the request body"}) //check if name is mentioned 
-        if(!phone) return res.status(400).send({status:false, msg: "phone is required in the request body"}) //check if phone is mentioned
-        if(!email) return res.status(400).send({status:false, msg: "email is required in the request body"})//check if email is mentioned 
-        if(!password) return res.status(400).send({status:false, msg: "password is required in the request body"})//check if password is mentioned 
-        if(!address) return res.status(400).send({status:false, msg: "address is required in the request body"})//check if address is mentioned
-        if(!pincode) return res.status(400).send({status:false, msg: "pincode is required in the request body"})  //check if pincode is mentioned 
-        if(!street) return res.status(400).send({status:false, msg: "street is required in the request body"})//check if street is mentioned 
-        if(!city) return res.status(400).send({status:false, msg: "city is required in the request body"})   //check if city is mentioned
+        if(!title) return res.status(400).send({status:false, message: "title is required in the request body"}) //check if title is mentioned 
+        if(!name) return res.status(400).send({status:false, message: "name is required in the request body"}) //check if name is mentioned 
+        if(!phone) return res.status(400).send({status:false, message: "phone is required in the request body"}) //check if phone is mentioned
+        if(!email) return res.status(400).send({status:false, message: "email is required in the request body"})//check if email is mentioned 
+        if(!password) return res.status(400).send({status:false, message: "password is required in the request body"})//check if password is mentioned 
+        if(!address) return res.status(400).send({status:false, message: "address is required in the request body"})//check if address is mentioned
+        if(!pincode) return res.status(400).send({status:false, message: "pincode is required in the request body"})  //check if pincode is mentioned 
+        if(!street) return res.status(400).send({status:false, message: "street is required in the request body"})//check if street is mentioned 
+        if(!city) return res.status(400).send({status:false, message: "city is required in the request body"})   //check if city is mentioned
 
         //-----------------------------------validation----------------------------------------------
         
@@ -65,12 +65,12 @@ const login=async function(req, res){
 
     //-------------------------password&&email----------------------------
 
-    if(!email1) return res.status(400).send({status:false, msg: "email is required in the request body"})//check if email is mentioned 
-    if(!password1) return res.status(400).send({status:false, msg: "password is required in the request body"})//check if password is mentioned 
+    if(!email1) return res.status(400).send({status:false, message: "email is required in the request body"})//check if email is mentioned 
+    if(!password1) return res.status(400).send({status:false, message: "password is required in the request body"})//check if password is mentioned 
     
     //-------------------------matching password&&email----------------------------
     let loginByEmailPassword = await userModel.findOne({email:email1, password:password1})
-    if(!loginByEmailPassword) return res.status(400).send({status:false, msg:"email or password are incorrect"})
+    if(!loginByEmailPassword) return res.status(400).send({status:false, message:"email or password are incorrect"})
     
     let token=jwt.sign(
         {
@@ -84,7 +84,7 @@ const login=async function(req, res){
     res.status(200).send({status:true, message: "Token Generated Successfully.", data: token})
     }
     catch(err){
-        res.status(500).send({status:false, msg:err.msg})
+        res.status(500).send({status:false, message:err.msg})
     }
 }
 
