@@ -28,12 +28,8 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        unique:true,
         required: true,
-        trim: true,
-        minLen: 8, 
-        maxLen: 15
-
+        trim: true
     },
     address:{
         street: { 

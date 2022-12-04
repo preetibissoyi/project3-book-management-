@@ -18,19 +18,40 @@ const isValidString = function (value) {
 
 //==============================validation for name===============================
 
-const isValidName = function (name) {
-  if (/^[a-zA-Z, ]+$/.test(name)) {
+
+
+const isValidName = function (value) {
+  if (/^[a-zA-Z, ]+$/.test(value)) {
     return true;
   }
 };
 
+
+const isValidTitle = function (value) {
+  return ["Mr", "Mrs", "Miss"].indexOf(value) !== -1;
+};
+
+
+// const isValidNumber = function (value) {
+//   if (/^-?[0-9][0-9,\.]+$/.test(value)) {
+//     return true;
+//   }
+// };
+
+// const isValidNumber = function (value) {
+//   if (/^(?:ISBN(?:-13)?:?\ )?(?=[0-9]{13}$|(?=(?:[0-9]+[-\ ]){4})[-\ 0-9]{17}$)97[89][-\ ]?[0-9]{1,5}[-\ ]?[0-9]+[-\ ]?[0-9]+[-\ ]?[0-9]$/.test(value)) {
+//     return true;
+//   }
+// };
+
+
 //--------------------------------subcategory--------------------------------------------
 
-const isValidSubcategory=function(subcategory){
-  if (/^[a-zA-Z0-9\- ]*$/.test(subcategory)){
-    return true;
-  }
-  }
+// const isValidSubcategory=function(value){
+//   if (/^[a-zA-Z0-9\- ]*$/.test(value)){
+//     return true;
+//   }
+//   }
 
   //--------------------------------date(format:mm/dd/yyyy)--------------------------------------------
 
@@ -48,24 +69,30 @@ const isValidPhone = function (phone) {
     return true
  }
 }
-//===========================validation for image===================================
 
-const isValidImage = function (image) {
-  if (/^(https\:\/\/.*\.(?:png|jpg))/.test(image)){
-     return true
-  }
- }
 
- const isValidPassword = function (value) {
-  return value.length >= 8 && value.length <= 15;
-};
+//  const isValidPassword = function (value) {
+//   return value.length >= 8 && value.length <= 15;
+// };
 
 //--------------------Id--------------------------
 const isValidObjectId = function (value) {
   return mongoose.Types.ObjectId.isValid(value);
 };
 
+const isValidRating = function (value) {
+  return /^[1-5]$/.test(value);
+};
+
+const isValidPassword = function (password) {
+    return (/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,15}$/.test(password))
+}
+
+// const isvalidISBN = function (isbn) {
+//     return /^(97[8|9]-)([0-9]{10,13}+)$/.test(isbn)
+// }
+
 //============================= module exports ==============================
 
 
-module.exports = { isValidEmail, isValidDate, isValidString,isValidName,isValidPhone,isValidImage,isValidPassword,isValidSubcategory,isValidObjectId}
+module.exports = { isValidTitle, isValidEmail, isValidRating, isValidDate, isValidString,isValidName,isValidPhone,isValidPassword,isValidObjectId}
