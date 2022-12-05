@@ -8,17 +8,16 @@ const createReview= async function(req,res){
     try{
 
         //----------------------pathParam-------------------------
-        let param= req.params.bookId
-        if(!param) return res.status(400).send({status:false, message: "bookId is required in the path param"}) //check if bookId is mentioned in path param
+        let bookId= req.params.bookId
+        if(!bookId) return res.status(400).send({status:false, message: "bookId is required in the path param"}) //check if bookId is mentioned in path param
        
         //----------------------requestBody-------------------------
         let data=req.body
-        let{bookId, reviewedBy, rating, review, reviewedAt}=data
+        let{ reviewedBy, rating, review, reviewedAt}=data
         if(Object.keys(data).length==0) return res.status(400).send({status:false, message: "data is required in the request body"})//check if the request body is empty
         
         //------------------------keys in req body----------------------------
 
-        if(!bookId) return res.status(400).send({status:false, message: "bookId is required in the request body"}) //check if bookId is mentioned 
         if(!reviewedBy) return res.status(400).send({status:false, message: "reviewedBy is required in the request body"}) //check if reviewedBy is mentioned 
         if(!rating) return res.status(400).send({status:false, message: "rating is required in the request body"}) //check if rating is mentioned 
         if(!review) return res.status(400).send({status:false, message: "review is required in the request body"}) //check if review is mentioned 
@@ -37,8 +36,6 @@ const createReview= async function(req,res){
         let checkBookId= await bookModel.findOne({_id:bookId, isDeleted:false})
         if(!checkBookId) return res.status(404).send({status:false, message: "book does'nt exist"})//checking bookId
 
-        if(param!=data.bookId) return res.status(400).send({status:false, message: "Path param's bookId does'nt match with request body's bookId"})
-        
         //--------------------------update review----------------------------
 
         if(review){

@@ -22,9 +22,6 @@ const createBook= async function(req,res){
 
          //---------------------------unique keys------------------------------
        
-        let unique= await bookModel.findOne({isDeleted:false})
-        if(!unique)return res.status(404).send({status:false, message: "book does not exist"}) 
-
         let uniqueTitle= await bookModel.findOne({title:title})
         if(uniqueTitle) return res.status(400).send({status:false, message: "title already exist"}) //unique title
         
@@ -82,12 +79,7 @@ try{
     //-------------------------anyCombinationOfQuery---------------------
 
     if(userId || category || subcategory ) {
-      if (!isValidObjectId(userId)) {
-        return res.status(400).send({
-          status: false,
-          message: "UserID is not Valid",
-        });
-      }
+      
       if ( !isValidName(category)) {
         return res.status(400).send({
           status: false,
@@ -102,6 +94,15 @@ try{
       }
     }
 
+    if(userId){
+      if (!isValidObjectId(userId)) {
+        return res.status(400).send({
+          status: false,
+          message: "UserID is not Valid",
+        });
+      }
+    }
+
     //--------------------------crossCheckqueryWithMongo---------------------------
 
        let getBooks= await bookModel.find({userId:userId, isDeleted:false}).select({_id:1,title:1,excerpt:1,userId:1,category:1,reviews:1,releasedAt:1}).sort({title:1})
@@ -109,12 +110,15 @@ try{
 
     //-------------------------------authorisation------------------------
 
-    // if (req.decodedToken.userId !== req.query.userId) 
-    // return res.status(403).send({
-    //   status: false,
-    //   message:
-    //     "Unauthorised Access: You CANNOT Create Books By using other User's ID (in Request-Body).",
-    // });
+    // if(userId){
+    //   if (req.decodedToken.userId !== req.query.userId) 
+    //   return res.status(403).send({
+    //     status: false,
+    //     message:
+    //       "Unauthorised Access: You CANNOT Create Books By using other User's ID (in Request-Body).",
+    //   });
+    // }
+  
 
     return res.status(200).send({ status: true,message: 'Books list', date:getBooks})
 

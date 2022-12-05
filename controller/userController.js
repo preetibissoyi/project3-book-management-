@@ -76,7 +76,7 @@ const login=async function(req, res){
         {
             userId:loginByEmailPassword._id,
             iat: Math.floor(Date.now() / 1000),
-            exp: Math.floor(Date.now() / 1000) + 12 * 60 * 60, 
+            exp: Math.floor(Date.now() / 1000) + 12 * 60 * 60,  
         },
         "group23"
     )

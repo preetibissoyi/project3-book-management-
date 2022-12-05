@@ -32,27 +32,6 @@ const isValidTitle = function (value) {
 };
 
 
-// const isValidNumber = function (value) {
-//   if (/^-?[0-9][0-9,\.]+$/.test(value)) {
-//     return true;
-//   }
-// };
-
-// const isValidNumber = function (value) {
-//   if (/^(?:ISBN(?:-13)?:?\ )?(?=[0-9]{13}$|(?=(?:[0-9]+[-\ ]){4})[-\ 0-9]{17}$)97[89][-\ ]?[0-9]{1,5}[-\ ]?[0-9]+[-\ ]?[0-9]+[-\ ]?[0-9]$/.test(value)) {
-//     return true;
-//   }
-// };
-
-
-//--------------------------------subcategory--------------------------------------------
-
-// const isValidSubcategory=function(value){
-//   if (/^[a-zA-Z0-9\- ]*$/.test(value)){
-//     return true;
-//   }
-//   }
-
   //--------------------------------date(format:mm/dd/yyyy)--------------------------------------------
 
 const isValidDate= function(Date){
@@ -69,11 +48,6 @@ const isValidPhone = function (phone) {
     return true
  }
 }
-
-
-//  const isValidPassword = function (value) {
-//   return value.length >= 8 && value.length <= 15;
-// };
 
 //--------------------Id--------------------------
 const isValidObjectId = function (value) {
