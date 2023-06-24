@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-mongoose.connect("mongodb+srv://group4:group4@cluster0.dknd8jj.mongodb.net/group23Database", {
+mongoose.connect("mongodb+srv://preeti:miausi2001@cluster0101.9ryctxd.mongodb.net/Project-book-management", {
     useNewUrlParser: true
 })
 .then( () => console.log("MongoDb is connected"))
